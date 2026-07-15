@@ -1,4 +1,6 @@
-<html lang="zh-CN"><head>
+<!doctype html>
+<html lang="zh-CN">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="format-detection" content="telephone=yes">
@@ -202,69 +204,13 @@
       <section class="call-panel">
         <p class="tip">如需挪车，请点击下方按钮联系车主</p>
         <p class="phone">15267108376</p>
-        <a class="call-button" href="tel:15267108376" data-call-button="" data-phone="15267108376" aria-label="拨打车主电话 15267108376">拨打车主电话</a>
+        <a
+          class="call-button"
+          href="tel:15267108376"
+          aria-label="拨打车主电话 15267108376"
+        >拨打车主电话</a>
       </section>
     </section>
   </main>
-  <script>
-    (function () {
-      var callButton = document.querySelector("[data-call-button]");
-      if (!callButton) return;
-
-      var phone = callButton.dataset.phone;
-      var telUrl = "tel:" + phone;
-      var telSlashUrl = "tel://" + phone;
-      var userAgent = navigator.userAgent || "";
-      var isAlipay = /AlipayClient/i.test(userAgent);
-
-      function fallbackToTel() {
-        window.location.href = telUrl;
-
-        window.setTimeout(function () {
-          if (!document.hidden) {
-            window.location.href = telSlashUrl;
-          }
-        }, 450);
-      }
-
-      function tryAlipayBridge() {
-        if (!window.AlipayJSBridge || !isAlipay) return false;
-
-        var fallbackTimer = window.setTimeout(fallbackToTel, 700);
-        var finished = false;
-
-        function finish(shouldFallback) {
-          if (finished) return;
-          finished = true;
-          window.clearTimeout(fallbackTimer);
-
-          if (shouldFallback) {
-            fallbackToTel();
-          }
-        }
-
-        try {
-          window.AlipayJSBridge.call("makePhoneCall", {
-            number: phone,
-            phoneNumber: phone
-          }, function (result) {
-            var hasError = result && (result.error || result.errorMessage || result.errorMsg);
-            finish(Boolean(hasError));
-          });
-          return true;
-        } catch (error) {
-          finish(true);
-          return true;
-        }
-      }
-
-      callButton.addEventListener("click", function (event) {
-        if (tryAlipayBridge()) {
-          event.preventDefault();
-        }
-      });
-    })();
-  </script>
-
-
-</body></html>
+</body>
+</html>
